@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+"""TUI for mda database management.
+"""
+
+from argparse import ArgumentParser
+import logging
+import sys
+
+from lsst.daf.butler_tui import ButlerTui
+
+#---------------------
+# Local definitions --
+#---------------------
+
+_logfmt = '%(asctime)s %(levelname)-8s %(name)-24s: %(message)s'
+
+def _logLevels(lvl) :
+    if lvl == 0 : return logging.WARNING
+    if lvl == 1 : return logging.INFO
+    return logging.DEBUG
+
+def _setLogging(lvl, fileName):
+    if fileName:
+        hdlr = logging.FileHandler(fileName)
+    else:
+        hdlr = logging.NullHandler()
+    hdlr.setFormatter(logging.Formatter(_logfmt))
+    rootlog = logging.getLogger()
+    rootlog.addHandler(hdlr)
+    rootlog.setLevel(_logLevels(lvl))
+
+#
+# Main function is called if the module is run as script
+#
+def main( argv ) :
+
+    # define options
+    parser = ArgumentParser(description='User interface for duf_butler')
+    parser.add_argument('-v', dest='verbose', action='count', default=0,
+                        help="increase verbosity, can be used multiple times")
+    parser.add_argument('-l', dest='log', default=None, metavar='PATH',
+                        help="File name for logging output, by default output is suppressed")
+    parser.add_argument('-u', dest='readonly', default=True, action='store_false',
+                        help="Update mode for database access, default is read-only mode.")
+    parser.add_argument('butler_uri', help="Butler URI")
+    args = parser.parse_args()
+
+    # setup logging based on verbosity level
+    _setLogging(args.verbose, args.log)
+
+    # instantiate main app widget
+    app = ButlerTui(args.butler_uri, args.readonly)
+    app.run()
+
+#
+#  run application when imported as a main module
+#
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))
