@@ -66,13 +66,13 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
         if coll_type != CollectionType.CALIBRATION:
             hints = [('Enter', "Select")]
         if coll_type == CollectionType.CHAINED:
-            hints += [("^E", "Show Chain")]
+            hints += [("->", "Show Chain")]
         return hints
 
     def keypress(self, size: Tuple[int, int], key: str) -> Optional[str]:
 
         # handle '^E'
-        if key == 'ctrl e':
+        if key == 'right':
             self._show_chain()
             return None
 

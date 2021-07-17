@@ -11,20 +11,20 @@ from .ui import UIHints, UIPopUp, UIPopUpLauncher, UIPopUpMessageBox
 
 # default palette for all apps
 _palette: List[Tuple[str, ...]] = [
-    ('body', 'black', 'light gray'),
+    ('body', 'light gray', 'dark blue'),
     ('selected', 'white', 'dark green'),
 
-    ('title', 'light cyan', 'black', 'bold,standout'),
+    ('title', 'white', 'dark green', 'bold,standout'),
 
-    ('hint', 'white', 'black'),
-    ('hint-high', 'light red', 'black'),
+    ('hint', 'black', 'dark green'),
+    ('hint-high', 'white', 'dark green'),
 
-    ('status', 'light green', 'black', 'bold,standout'),
-    ('status-high', 'yellow', 'black', 'bold,standout'),
+    ('status', 'black', 'dark green', 'bold,standout'),
+    ('status-high', 'yellow', 'dark green', 'bold,standout'),
 
-    ('list-colhead', 'white', 'black', 'bold'),
-    ('list-item', 'black', 'light gray'),
-    ('list-selected', 'white', 'dark gray', 'standout'),
+    ('list-colhead', 'light cyan', 'dark blue', 'bold'),
+    ('list-item', 'light gray', 'dark blue'),
+    ('list-selected', 'black', 'dark cyan', 'standout'),
 
     ('menu', 'white', 'black'),
     ('menu-focus', 'black', 'white', 'standout'),
