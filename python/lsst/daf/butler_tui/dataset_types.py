@@ -65,10 +65,13 @@ class DatasetTypeList(UIListBoxWithHeader, AppPanel):
         return "Dataset Type List"
 
     def status(self) -> str:
-        return "Dataset types"
+        if self._collection:
+            return f"Dataset types for collection `{self._collection}`"
+        else:
+            return f"Dataset types"
 
-    def hints(self) -> List[Tuple[str, str]]:
-        hints = []
+    def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+        hints = global_hints
         if self._collection:
             hints += [('Enter', "Select")]
         return hints

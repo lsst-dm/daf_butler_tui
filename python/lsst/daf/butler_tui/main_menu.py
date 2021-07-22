@@ -49,8 +49,8 @@ class ButlerMainMenu(UIListBoxWithHeader, AppPanel):
     def title(self) -> str:
         return 'Types of butler data'
 
-    def hints(self) -> List[Tuple[str, str]]:
-        return [('Enter', "Select")]
+    def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+        return global_hints + [('Enter', "Select")]
 
     def status(self) -> str:
         return ""

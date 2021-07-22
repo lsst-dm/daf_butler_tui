@@ -34,7 +34,7 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
         if collection is None:
             collections = sorted(butler.registry.queryCollections())
         else:
-            collections = sorted(butler.registry.queryCollections(collection, flattenChains=True))
+            collections = list(butler.registry.queryCollections(collection, flattenChains=True))
         max_len = min(max(len(coll_name) for coll_name in collections), 64)
 
         col_width = [max_len, 12]
@@ -59,12 +59,10 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
     def title(self) -> str:
         return "Collections List"
 
-    def hints(self) -> List[Tuple[str, str]]:
-        hints = []
+    def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+        hints = global_hints
         item = self._walker.get_focus()[0]
         coll_type = item.user_data[1]
-        if coll_type != CollectionType.CALIBRATION:
-            hints = [('Enter', "Select")]
         if coll_type == CollectionType.CHAINED:
             hints += [("->", "Show Chain")]
         return hints
@@ -84,9 +82,8 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
         return "Collections"
 
     def _itemActivated(self, coll_name: str, coll_type: CollectionType, item: UIColumns) -> None:
-        if coll_type != CollectionType.CALIBRATION:
-            _log.debug("emitting signal 'selected': %r", coll_name)
-            self._emit('selected', coll_name)
+        _log.debug("emitting signal 'selected': %r", coll_name)
+        self._emit('selected', coll_name)
 
     def _show_chain(self) -> None:
         # figure out which collection is selected

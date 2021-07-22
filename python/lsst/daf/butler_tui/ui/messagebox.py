@@ -73,9 +73,9 @@ class UIMessageBox(urwid.WidgetWrap):
         self._emit('selected', value)
 
     def keypress(self, size: Tuple, key: str) -> Optional[str]:
-        _log.debug("UIMenu: received key: %s", key)
+        _log.debug("UIMessageBox: received key: %s", key)
         if self.escape_value is not None and key == 'esc':
-            _log.debug("UIMenu: escape key: %s", self.escape_value)
+            _log.debug("UIMessageBox: escape key: %s", self.escape_value)
             self._emit('selected', self.escape_value)
             return None
         return super().keypress(size, key)

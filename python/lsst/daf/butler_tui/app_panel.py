@@ -13,14 +13,14 @@ class AppPanel:
         """Return string displayed as a panel title"""
         raise NotImplementedError()
 
-    def hints(self) -> List[Tuple[str, str]]:
+    def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
         """Return list of hints.
 
         Each hint is a tuple of two strings, first string is the name of
         a key and second is the name of the action, e.g. ("^E", "Menu").
         Default implementation returns empty list.
         """
-        return []
+        return global_hints
 
     def status(self) -> str:
         """Return status string.

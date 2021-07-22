@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple, TYPE_CHECKING
 
 import urwid
 from .app_panel import AppPanel
-from .ui import UIListBoxWithHeader, UIColumns, UISelectableText
+from .ui import UIListBoxWithHeader, UIColumns, UISelectableText, UIPopUpMessageBox
 
 if TYPE_CHECKING:
     from .butler_tui import ButlerTui
@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 _log = logging.getLogger(__name__)
 
 
-    
 
 class DatasetList(UIListBoxWithHeader, AppPanel):
     """Widget class containing list of collections.
@@ -32,12 +31,17 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
 
     def __init__(self, app: ButlerTui, butler: Butler, collection: str, dataset_type: DatasetType):
 
+        self._butler = butler
+        self._collection = collection
+        self._known_storage = True
+
         dim_names = list(dataset_type.dimensions.names)
 
         def _sort_key(ref):
             return tuple(ref.dataId[name] for name in dim_names)
 
         refs = butler.registry.queryDatasets(datasetType=dataset_type, collections=collection)
+
         refs = sorted(refs, key=_sort_key)
         self._total_count = len(refs)
 
@@ -56,6 +60,8 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
         for ref in refs:
             item = UIColumns([UISelectableText(str(ref.id))] + [str(ref.dataId[name]) for name in dim_names],
                              col_width, 1)
+            if self._known_storage:
+                urwid.connect_signal(item, 'activated', self._itemActivated, user_args=[ref])
             item = urwid.AttrMap(item, "list-item", "list-selected")
             items.append(item)
 
@@ -65,6 +71,19 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
     def title(self) -> str:
         return "Dataset List"
 
+    def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+        hints = global_hints
+        if self._known_storage:
+            hints += [('Enter', "Select")]
+        return hints
+
     def status(self) -> str:
-        position = self._walker.focus + 1
-        return f"Dataset {position} out of {self._total_count}"
+        if self._walker.focus is not None:
+            position = self._walker.focus + 1
+            return f"Dataset {position} out of {self._total_count}"
+        else:
+            return ""
+
+    def _itemActivated(self, ref: DatasetRef, item: UIColumns) -> None:
+        _log.debug("emitting signal 'selected': %r", ref)
+        self._emit('selected', ref)

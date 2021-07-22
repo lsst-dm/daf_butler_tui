@@ -116,10 +116,13 @@ class AppBase(urwid.WidgetWrap):
         pop_up : `UIPopUp`
         """
         self._pop_up_launcher.make_pop_up(popup)
-        self._hint.push_hints(popup.hints())
+        self._hint.set_hints(popup.hints())
 
     def popup_closed(self, widget: urwid.Widget) -> None:
-        self._hint.pop_hints()
+        widget = self._widgetStack[-1]
+        self._hint.set_hints(widget.hints(self.hints()))
+        # have to refresh
+        self._main_loop.draw_screen()
 
     def run(self) -> None:
         """Starts the whole shebang.
@@ -134,14 +137,22 @@ class AppBase(urwid.WidgetWrap):
         """
         raise NotImplementedError()
 
-    def makePanel(self, PanelClass: Type[urwid.Widget], *args: Any, **kwargs: Any) -> urwid.Widget:
+    def makePanel(self, PanelClass: Type[urwid.Widget], *args: Any, **kwargs: Any) -> Optional[urwid.Widget]:
         """Create panel widget from given panel class and additional arguments.
 
-        thsi sis the factory method that should be used by sub-classes to
+        This is the factory method that should be used by sub-classes to
         instantiate panel widgets.
         """
-        widget = PanelClass(self, *args, **kwargs)
-        self.setCentralWidget(widget)
+        try:
+            widget = PanelClass(self, *args, **kwargs)
+        except Exception as exc:
+            _log.error("Exception in panel constructor", exc_info=True)
+            buttons = [('Close', 'close')]
+            self.make_pop_up(UIPopUpMessageBox("Exception", str(exc), buttons=buttons,
+                                               escape_value="close", cols=72, attr='messagebox-error'))
+            widget = None
+        if widget:
+            self.setCentralWidget(widget)
         return widget
 
     def setCentralWidget(self, widget: urwid.Widget) -> None:
@@ -151,7 +162,7 @@ class AppBase(urwid.WidgetWrap):
         self._frame.contents['body'] = (urwid.AttrMap(root, 'body'), None)
         self._widgetStack.append(widget)
         self._status.set_text(widget.status())
-        self._hint.push_hints(self.hints() + widget.hints())
+        self._hint.set_hints(widget.hints(self.hints()))
 
     def goBack(self) -> None:
         """Return to previous panel.
@@ -161,7 +172,7 @@ class AppBase(urwid.WidgetWrap):
             widget = self._widgetStack[-1]
             root = urwid.LineBox(widget, widget.title())
             self._frame.contents['body'] = (urwid.AttrMap(root, 'body'), None)
-            self._hint.pop_hints()
+            self._hint.set_hints(widget.hints(self.hints()))
             self._status.set_text(widget.status())
 
     def hints(self) -> List[Tuple[str, str]]:
@@ -204,7 +215,7 @@ class AppBase(urwid.WidgetWrap):
             self._hint.set_hints(self._pop_up_launcher.popup.hints())
         elif self._widgetStack:
             widget = self._widgetStack[-1]
-            self._hint.set_hints(self.hints() + widget.hints())
+            self._hint.set_hints(widget.hints(self.hints()))
 
         return key
 
