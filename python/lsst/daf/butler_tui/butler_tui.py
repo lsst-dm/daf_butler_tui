@@ -15,9 +15,9 @@ from .collections import CollectionList
 from .datasets import DatasetList
 from .dataset_types import DatasetTypeList
 from .dimensions import DimensionsList
+from .dimension_records import DimensionRecordList
 from .main_menu import ButlerMainMenu
 from .pager import Pager
-from .ui import UIPopUpMessageBox
 
 
 _log = logging.getLogger(__name__)
@@ -57,7 +57,7 @@ class ButlerTui(AppBase):
 
         if mainMenuItem == 'dimensions':
             widget = self.makePanel(DimensionsList, self.butler)
-            # urwid.connect_signal(widget, 'selected', self.partitionSelected)
+            urwid.connect_signal(widget, 'selected', self.dimensionSelected)
             pass
         elif mainMenuItem == 'collections':
             widget = self.makePanel(CollectionList, self.butler)
@@ -70,6 +70,9 @@ class ButlerTui(AppBase):
             # if widget is not None:
             #     urwid.connect_signal(widget, 'selected', self.partitionSelected)
             pass
+
+    def dimensionSelected(self, widget: urwid.Widget, element: DimensionElement) -> None:
+        widget = self.makePanel(DimensionRecordList, self.butler, element)
 
     def collectionSelected(self, widget: urwid.Widget, collName: str) -> None:
         widget = self.makePanel(DatasetTypeList, self.butler, collName)

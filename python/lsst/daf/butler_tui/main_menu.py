@@ -31,8 +31,8 @@ class ButlerMainMenu(UIListBoxWithHeader, AppPanel):
 
         menu = [
             ("Dimensions", "dimensions"),
-            ("Collections", "collections"),
             ("Dataset Types", "dataset_types"),
+            ("Collections", "collections"),
         ]
 
         col_width = [30]

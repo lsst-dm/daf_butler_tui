@@ -56,6 +56,7 @@ class DimensionsList(UIListBoxWithHeader, AppPanel):
                               implied,
                               metadata],
                              col_width, 1)
+            urwid.connect_signal(item, 'activated', self._itemActivated, user_args=[element])
             items.append(item)
 
         UIListBoxWithHeader.__init__(self, items, header=header)
@@ -65,3 +66,11 @@ class DimensionsList(UIListBoxWithHeader, AppPanel):
 
     def status(self) -> str:
         return "Dimensions"
+
+    def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+        hints = global_hints + [('Enter', "Select")]
+        return hints
+
+    def _itemActivated(self, element: DimensionElement, item: UIColumns) -> None:
+        _log.debug("emitting signal 'selected': %r", element)
+        self._emit('selected', element)
