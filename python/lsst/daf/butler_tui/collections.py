@@ -61,6 +61,7 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
 
     def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
         hints = global_hints
+        hints +=  [("Enter", "Select")]
         item = self._walker.get_focus()[0]
         coll_type = item.user_data[1]
         if coll_type == CollectionType.CHAINED:
