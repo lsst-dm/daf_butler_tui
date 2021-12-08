@@ -81,8 +81,8 @@ class UIListBoxWithHeader(urwid.Frame):
     def __init__(self, body: urwid.ListWalker, header: Optional[urwid.Widget] = None,
                  footer: Optional[urwid.Widget] = None, focus_part: str = 'body'):
         """
-        @param body:  walker instance passed to ListBox constructor or a list of
-                      items, each item will be wrapped into AttrMap.
+        @param body:  walker instance passed to ListBox constructor or a list
+                      of items, each item will be wrapped into AttrMap.
 
         Other parameters are passed to Frame constructor
         """

@@ -9,7 +9,7 @@ from typing import Any
 
 import urwid
 
-from lsst.daf.butler import Butler
+from lsst.daf.butler import Butler, DatasetRef, DatasetType, DimensionElement
 from .app_base import AppBase
 from .collections import CollectionList
 from .datasets import DatasetList
@@ -68,11 +68,12 @@ class ButlerTui(AppBase):
         elif mainMenuItem == 'dataset_types':
             widget = self.makePanel(DatasetTypeList, self.butler)
             # if widget is not None:
-            #     urwid.connect_signal(widget, 'selected', self.partitionSelected)
+            #     urwid.connect_signal(widget, 'selected',
+            #                          self.partitionSelected)
             pass
 
     def dimensionSelected(self, widget: urwid.Widget, element: DimensionElement) -> None:
-        widget = self.makePanel(DimensionRecordList, self.butler, element)
+        self.makePanel(DimensionRecordList, self.butler, element)
 
     def collectionSelected(self, widget: urwid.Widget, collName: str) -> None:
         widget = self.makePanel(DatasetTypeList, self.butler, collName)

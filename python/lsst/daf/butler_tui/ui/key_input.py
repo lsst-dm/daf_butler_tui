@@ -60,7 +60,7 @@ class UIKeyInputRunlb(urwid.WidgetWrap):
         return since, until
 
 
-class UIKeyInput_runevt(UIKeyInputRunlb):
+class UIKeyInputRunEvt(UIKeyInputRunlb):
     second_caption = "Event"
 
     _stored_values = {"since": (0, 0), "until": (0, 0)}
@@ -94,7 +94,7 @@ class UIKeyInputTime(urwid.WidgetWrap):
         return time_edit.combine(since, until)
 
 
-class UIKeyInput_unknown(urwid.WidgetWrap):
+class UIKeyInputUnknown(urwid.WidgetWrap):
     signals = ['activated']
 
     _stored_values = {"since": 0, "until": 0}
@@ -125,11 +125,11 @@ def UIKeyInputClass(iov_type: str) -> Type:
     if iov_type == "run-lumi":
         return UIKeyInputRunlb
     elif iov_type == "run-event":
-        return UIKeyInput_runevt
+        return UIKeyInputRunEvt
     elif iov_type == "time":
         return UIKeyInputTime
     else:
-        return UIKeyInput_unknown
+        return UIKeyInputUnknown
 
 
 class UIKeysInput(urwid.WidgetWrap):

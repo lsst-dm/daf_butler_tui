@@ -35,9 +35,11 @@ class UISelectableText(urwid.Text):
                  layout: Optional[urwid.TextLayout] = None):
         """
         @param markup: Text Markup: content of text widget
-        @param align (text alignment mode) - typically 'left', 'center' or 'right'
+        @param align (text alignment mode) - typically 'left', 'center' or
+            'right'
         @param wrap (text wrapping mode) - typically 'space', 'any' or 'clip'
-        @param layout (text layout instance) - defaults to a shared StandardTextLayout instance
+        @param layout (text layout instance) - defaults to a shared
+            StandardTextLayout instance
         """
         urwid.Text.__init__(self, markup, align, wrap, layout)
 

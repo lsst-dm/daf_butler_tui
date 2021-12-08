@@ -1,19 +1,18 @@
 from __future__ import annotations
 
 import logging
-from typing import List, Optional, Tuple, TYPE_CHECKING
+from typing import List, Tuple, TYPE_CHECKING
 
 import urwid
 from .app_panel import AppPanel
-from .ui import UIListBoxWithHeader, UIColumns, UISelectableText, UIPopUpMessageBox
+from .ui import UIListBoxWithHeader, UIColumns, UISelectableText
 
 if TYPE_CHECKING:
     from .butler_tui import ButlerTui
-    from lsst.daf.butler import Butler
+    from lsst.daf.butler import Butler, DatasetRef, DatasetType
 
 
 _log = logging.getLogger(__name__)
-
 
 
 class DatasetList(UIListBoxWithHeader, AppPanel):
@@ -50,7 +49,6 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
         for ref in refs:
             for i, name in enumerate(dim_names):
                 dim_lengths[i] = max(dim_lengths[i], len(str(ref.dataId[name])))
-
 
         col_width = [id_len] + dim_lengths
         header = UIColumns(["ID"] + dim_names,

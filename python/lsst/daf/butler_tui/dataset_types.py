@@ -9,7 +9,7 @@ from .ui import UIListBoxWithHeader, UIColumns, UISelectableText
 
 if TYPE_CHECKING:
     from .butler_tui import ButlerTui
-    from lsst.daf.butler import Butler
+    from lsst.daf.butler import Butler, DatasetType
 
 
 _log = logging.getLogger(__name__)
@@ -36,7 +36,8 @@ class DatasetTypeList(UIListBoxWithHeader, AppPanel):
             coll_summary = butler.registry.getCollectionSummary(collection)
             dataset_types = sorted(coll_summary.datasetTypes, key=lambda dst: dst.name)
         else:
-            dataset_types = sorted(butler.registry.queryDatasetTypes(components=True), key=lambda dst: dst.name)
+            dataset_types = sorted(butler.registry.queryDatasetTypes(components=True),
+                                   key=lambda dst: dst.name)
 
         name_len = min(max([4] + [len(dst.name) for dst in dataset_types]), 64)
         # dst.storageClass.name can crash
@@ -68,7 +69,7 @@ class DatasetTypeList(UIListBoxWithHeader, AppPanel):
         if self._collection:
             return f"Dataset types for collection `{self._collection}`"
         else:
-            return f"Dataset types"
+            return "Dataset types"
 
     def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
         hints = global_hints

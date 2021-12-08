@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import List, Tuple, TYPE_CHECKING
+from typing import Callable, List, Optional, Tuple, TYPE_CHECKING
 
 import urwid
 from .app_panel import AppPanel
-from .ui import UIListBoxWithHeader, UIColumns, UISelectableText
 
 if TYPE_CHECKING:
     from .butler_tui import ButlerTui

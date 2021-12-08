@@ -1,19 +1,18 @@
 from __future__ import annotations
 
 import logging
-from typing import List, Optional, Tuple, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 import urwid
 from .app_panel import AppPanel
-from .ui import UIListBoxWithHeader, UIColumns, UISelectableText, UIPopUpMessageBox
+from .ui import UIListBoxWithHeader, UIColumns, UISelectableText
 
 if TYPE_CHECKING:
     from .butler_tui import ButlerTui
-    from lsst.daf.butler import Butler
+    from lsst.daf.butler import Butler, DimensionElement
 
 
 _log = logging.getLogger(__name__)
-
 
 
 class DimensionRecordList(UIListBoxWithHeader, AppPanel):

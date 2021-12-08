@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Optional, Tuple, TYPE_CHECKING
 
 import urwid
 from lsst.daf.butler import CollectionType

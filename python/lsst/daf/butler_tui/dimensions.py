@@ -9,7 +9,7 @@ from .ui import UIListBoxWithHeader, UIColumns, UISelectableText
 
 if TYPE_CHECKING:
     from .butler_tui import ButlerTui
-    from lsst.daf.butler import Butler
+    from lsst.daf.butler import Butler, DimensionElement
 
 
 _log = logging.getLogger(__name__)
