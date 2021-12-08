@@ -35,7 +35,10 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
             collections = sorted(butler.registry.queryCollections())
         else:
             collections = list(butler.registry.queryCollections(collection, flattenChains=True))
-        max_len = min(max(len(coll_name) for coll_name in collections), 64)
+        if collections:
+            max_len = min(max(len(coll_name) for coll_name in collections), 64)
+        else:
+            max_len = 32
 
         col_width = [max_len, 12]
         header = UIColumns(["Name",
@@ -62,9 +65,10 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
     def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
         hints = global_hints
         item = self._walker.get_focus()[0]
-        coll_type = item.user_data[1]
-        if coll_type == CollectionType.CHAINED:
-            hints += [("->", "Show Chain")]
+        if item is not None:
+            coll_type = item.user_data[1]
+            if coll_type == CollectionType.CHAINED:
+                hints += [("->", "Show Chain")]
         return hints
 
     def keypress(self, size: Tuple[int, int], key: str) -> Optional[str]:
