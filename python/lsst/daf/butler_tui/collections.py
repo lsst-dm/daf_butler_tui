@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Optional, Tuple, TYPE_CHECKING
 
 import urwid
 from lsst.daf.butler import CollectionType
@@ -64,7 +64,7 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
 
     def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
         hints = global_hints
-        hints +=  [("Enter", "Select")]
+        hints += [("Enter", "Select")]
         item = self._walker.get_focus()[0]
         if item is not None:
             coll_type = item.user_data[1]

@@ -46,8 +46,9 @@ class UIMessageBox(urwid.WidgetWrap):
         """
         @param title:    Menu title
         @param message:  Message string
-        @param buttons:  List of ('button_text', value) tuples, value is used for
-                         'selected' signal when corresponding button is clicked
+        @param buttons:  List of ('button_text', value) tuples, value is used
+                         for 'selected' signal when corresponding button is
+                         clicked
         @param escape_value:  if not None then escape key will generate
                          'selected' signal with this value
         """

@@ -76,7 +76,8 @@ class UIPopUpMenu(UIPopUp):
 
     Parameters
     ----------
-    title, message, buttons, escape_value, attr : same as for `UIMessageBox` class
+    title, message, buttons, escape_value, attr :
+        same as for `UIMessageBox` class
     callback : `method`
         Method to call when menu item is selected.
     cols : `int`

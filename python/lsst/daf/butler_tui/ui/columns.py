@@ -37,13 +37,16 @@ class UIColumns(urwid.Columns):
                  dividechars: int = 0, focus_column: Optional[int] = None, min_width: int = 1,
                  box_columns: Optional[List[int]] = None, wrap: str = 'clip'):
         """
-        @param widget_list: List of items, each item can be either widget or an object, if
-                    it is non-widget it is converted to string and wrapped into UISelectableText widget
-        @param width_list:  List of widget widths, if given must have the same length as
-                    widget_list. Items in the list are either positive numbers for absolute
-                    width, negative numbers for negative weight, or string 'pack' to calculate
-                    actual size of the widget.
-        @param wrap: Wrapping method for text widgets created from strings in widget_list.
+        @param widget_list: List of items, each item can be either widget or an
+                    object, if it is non-widget it is converted to string and
+                    wrapped into UISelectableText widget
+        @param width_list:  List of widget widths, if given must have the same
+                    length as widget_list. Items in the list are either
+                    positive numbers for absolute width, negative numbers for
+                    negative weight, or string 'pack' to calculate actual size
+                    of the widget.
+        @param wrap: Wrapping method for text widgets created from strings in
+                    widget_list.
 
         Other parameters are the same as in call to urwid.Columns constructor.
         """
