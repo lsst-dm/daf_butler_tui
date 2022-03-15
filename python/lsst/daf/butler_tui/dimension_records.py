@@ -37,7 +37,7 @@ class DimensionRecordList(UIListBoxWithHeader, AppPanel):
         if records:
             keys = records[0].fields.names
         else:
-            keys = []
+            keys = ()
         records.sort(key=lambda r: r.dataId)
         self._total_count = len(records)
 

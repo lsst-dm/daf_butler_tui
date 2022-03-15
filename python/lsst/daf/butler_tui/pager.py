@@ -44,7 +44,7 @@ class Pager(urwid.Frame, AppPanel):
 
         urwid.Frame.__init__(self, term)
 
-    def title(self) -> str:
+    def title(self) -> Optional[str]:
         return self._title
 
     def hints(self, global_hints: List[Tuple[str, str]]) -> List[Tuple[str, str]]:

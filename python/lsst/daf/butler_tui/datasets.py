@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import List, Tuple, TYPE_CHECKING
+from typing import Iterable, List, Tuple, TYPE_CHECKING
 
 import urwid
 from .app_panel import AppPanel
@@ -39,7 +39,9 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
         def _sort_key(ref):
             return tuple(ref.dataId[name] for name in dim_names)
 
-        refs = set(butler.registry.queryDatasets(datasetType=dataset_type, collections=collection))
+        refs: Iterable[DatasetRef] = set(
+            butler.registry.queryDatasets(datasetType=dataset_type, collections=collection)
+        )
 
         refs = sorted(refs, key=_sort_key)
         self._total_count = len(refs)
@@ -56,8 +58,9 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
 
         items = []
         for ref in refs:
-            item = UIColumns([UISelectableText(str(ref.id))] + [str(ref.dataId[name]) for name in dim_names],
-                             col_width, 1)
+            cols: List = [UISelectableText(str(ref.id))]
+            cols += [str(ref.dataId[name]) for name in dim_names]
+            item = UIColumns(cols, col_width, 1)
             if self._known_storage:
                 urwid.connect_signal(item, 'activated', self._itemActivated, user_args=[ref])
             item = urwid.AttrMap(item, "list-item", "list-selected")

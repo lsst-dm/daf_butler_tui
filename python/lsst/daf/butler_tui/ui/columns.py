@@ -8,7 +8,7 @@ __all__ = ["UIColumns"]
 #  Imports of standard modules --
 #--------------------------------
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 #-----------------------------
 # Imports for other modules --
@@ -33,7 +33,7 @@ class UIColumns(urwid.Columns):
 
     signals = ['activated']
 
-    def __init__(self, widget_list: List[urwid.Widget], width_list: Optional[List[int]] = None,
+    def __init__(self, widget_list: Iterable[urwid.Widget], width_list: Optional[List[int]] = None,
                  dividechars: int = 0, focus_column: Optional[int] = None, min_width: int = 1,
                  box_columns: Optional[List[int]] = None, wrap: str = 'clip'):
         """
