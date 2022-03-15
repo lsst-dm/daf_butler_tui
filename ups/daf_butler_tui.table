@@ -1,4 +1,5 @@
 setupRequired(daf_butler)
+setupRequired(pex_config)
 setupRequired(sconsUtils)
 
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)

@@ -3,6 +3,7 @@ from __future__ import annotations
 __all__ = ["ButlerTui"]
 
 import logging
+import pprint
 import os
 import tempfile
 from typing import Any
@@ -10,6 +11,7 @@ from typing import Any
 import urwid
 
 from lsst.daf.butler import Butler, DatasetRef, DatasetType, DimensionElement
+import lsst.pex.config as pexConfig
 from .app_base import AppBase
 from .collections import CollectionList
 from .datasets import DatasetList
@@ -96,7 +98,13 @@ class ButlerTui(AppBase):
         def factory():
             data = self.butler.getDirect(ref)
             fd, path = tempfile.mkstemp()
-            os.write(fd, str(data).encode())
+            if isinstance(data, pexConfig.Config):
+                data = data.saveToString(skipImports=True)
+            if isinstance(data, (dict, list, tuple)):
+                data = pprint.pformat(data)
+            else:
+                data = str(data)
+            os.write(fd, data.encode())
             os.close(fd)
             _log.debug("dumped data to: %r", path)
             return path
