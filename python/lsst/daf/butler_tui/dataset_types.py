@@ -34,7 +34,7 @@ class DatasetTypeList(UIListBoxWithHeader, AppPanel):
 
         if collection:
             coll_summary = butler.registry.getCollectionSummary(collection)
-            dataset_types = sorted(coll_summary.datasetTypes, key=lambda dst: dst.name)
+            dataset_types = sorted(coll_summary.dataset_types, key=lambda dst: dst.name)
         else:
             dataset_types = sorted(butler.registry.queryDatasetTypes(components=True),
                                    key=lambda dst: dst.name)
