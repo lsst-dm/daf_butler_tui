@@ -96,7 +96,7 @@ class ButlerTui(AppBase):
     def datasetSelected(self, widget: urwid.Widget, ref: DatasetRef) -> None:
 
         def factory():
-            data = self.butler.getDirect(ref)
+            data = self.butler.get(ref)
             fd, path = tempfile.mkstemp()
             if isinstance(data, pexConfig.Config):
                 data = data.saveToString(skipImports=True)
