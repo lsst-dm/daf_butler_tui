@@ -55,7 +55,7 @@ class UIMenu(urwid.WidgetWrap):
             items.append(urwid.AttrMap(button, None, 'menu-focus'))
         listbox = urwid.ListBox(urwid.SimpleFocusListWalker(items))
         linebox = urwid.LineBox(listbox, title)
-        self.__super.__init__(urwid.AttrMap(linebox, 'menu'))
+        super().__init__(urwid.AttrMap(linebox, 'menu'))
 
         self.escape_value = escape_value
 
@@ -68,7 +68,7 @@ class UIMenu(urwid.WidgetWrap):
             _log.debug("UIMenu: escape key: %s", self.escape_value)
             self._emit('selected', self.escape_value)
             return None
-        return self.__super.keypress(size, key)
+        return super().keypress(size, key)
 
 
 class UIPopUpMenu(UIPopUp):
@@ -93,7 +93,7 @@ class UIPopUpMenu(UIPopUp):
 
         pop_up_size = (cols, len(options) + 2)
 
-        self.__super.__init__(menu, pop_up_size)
+        super().__init__(menu, pop_up_size)
 
     def hints(self) -> List[Tuple[str, str]]:
         return [("Esc", "Cancel"), ("Enter", "Select")]

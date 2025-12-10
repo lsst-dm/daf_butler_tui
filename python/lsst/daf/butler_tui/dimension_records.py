@@ -32,7 +32,9 @@ class DimensionRecordList(UIListBoxWithHeader, AppPanel):
 
         self._butler = butler
 
-        records = list(butler.registry.queryDimensionRecords(element, check=False))
+        _log.debug("querying dimension records for element %s", element)
+        records = butler.query_dimension_records(element)
+        _log.debug("found %d dimension records", len(records))
 
         if records:
             keys = records[0].fields.names

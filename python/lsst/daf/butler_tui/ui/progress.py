@@ -92,7 +92,7 @@ class UIProgressBar(urwid.WidgetWrap):
             inner = self.progress_bar
         filler = urwid.Filler(inner, height='flow')     # need to wrap it into a box widget
         linebox = urwid.LineBox(filler, title)         # wrap it all into linebox with title
-        self.__super.__init__(urwid.AttrMap(linebox, attr))
+        super().__init__(urwid.AttrMap(linebox, attr))
 
         self._escape_signal = escape_signal
 
@@ -103,7 +103,7 @@ class UIProgressBar(urwid.WidgetWrap):
         if self._escape_signal is not None and key == 'esc':
             self._emit('cancelled')
             return None
-        return self.__super.keypress(size, key)
+        return super().keypress(size, key)
 
 
 class UIPopUpProgress(UIPopUp):
@@ -118,7 +118,7 @@ class UIPopUpProgress(UIPopUp):
             urwid.connect_signal(self.pbar, 'cancelled', callback)
 
         pop_up_size = (cols, 5 if cancel_button else 3)
-        self.__super.__init__(self.pbar, pop_up_size)
+        super().__init__(self.pbar, pop_up_size)
 
         self._cancelled = False
 

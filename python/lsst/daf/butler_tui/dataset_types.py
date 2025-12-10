@@ -36,8 +36,7 @@ class DatasetTypeList(UIListBoxWithHeader, AppPanel):
             coll_summary = butler.registry.getCollectionSummary(collection)
             dataset_types = sorted(coll_summary.dataset_types, key=lambda dst: dst.name)
         else:
-            dataset_types = sorted(butler.registry.queryDatasetTypes(components=True),
-                                   key=lambda dst: dst.name)
+            dataset_types = sorted(butler.registry.queryDatasetTypes(), key=lambda dst: dst.name)
 
         name_len = min(max([4] + [len(dst.name) for dst in dataset_types]), 64)
         # dst.storageClass.name can crash

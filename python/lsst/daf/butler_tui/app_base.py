@@ -53,7 +53,7 @@ class FailedExit(UIPopUpMessageBox):
 
     def __init__(self, message: str, callback: Callable):
         buttons = [('Exit', 'exit')]
-        self.__super.__init__('Application failure', message, buttons, callback,
+        super().__init__('Application failure', message, buttons, callback,
                               escape_value='exit', attr='messagebox-error')
 
 #------------------------

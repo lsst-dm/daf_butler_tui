@@ -39,9 +39,9 @@ class DatasetList(UIListBoxWithHeader, AppPanel):
         def _sort_key(ref):
             return tuple(ref.dataId[name] for name in dim_names)
 
-        refs: Iterable[DatasetRef] = set(
-            butler.registry.queryDatasets(datasetType=dataset_type, collections=collection)
-        )
+        _log.debug("querying datasets for dataset type %s, collection %r", dataset_type, collection)
+        refs: Iterable[DatasetRef] = set(butler.query_datasets(dataset_type, collection, find_first=False))
+        _log.debug("found %d datasets", len(refs))
 
         refs = sorted(refs, key=_sort_key)
         self._total_count = len(refs)

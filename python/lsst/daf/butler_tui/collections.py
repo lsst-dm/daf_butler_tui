@@ -31,12 +31,30 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
 
     def __init__(self, app: ButlerTui, butler: Butler, collection=None):
 
+        _log.debug("querying collections %s", collection)
         if collection is None:
-            collections = sorted(butler.registry.queryCollections())
+            known_collection_type = CollectionType.CHAINED
+            collections = [
+                (coll, CollectionType.CHAINED)
+                for coll in sorted(
+                    butler.collections.query(
+                        "*",
+                        collection_types=CollectionType.CHAINED,
+                        flatten_chains=False,
+                    )
+                )
+            ]
         else:
-            collections = list(butler.registry.queryCollections(collection, flattenChains=True))
+            known_collection_type = None
+            collections = sorted(
+                (info.name, info.type)
+                for info in butler.collections.query_info(
+                    collection, flatten_chains=True
+                )
+            )
+        _log.debug("found %d collections", len(collections))
         if collections:
-            max_len = min(max(len(coll_name) for coll_name in collections), 64)
+            max_len = min(max(len(coll_name) for coll_name, _ in collections), 132)
         else:
             max_len = 32
 
@@ -46,8 +64,7 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
                            col_width, 1)
 
         items = []
-        for coll_name in collections:
-            coll_type = butler.registry.getCollectionType(coll_name)
+        for coll_name, coll_type in collections:
             item = UIColumns([UISelectableText(coll_name),
                               coll_type.name],
                              col_width, 1)
@@ -80,7 +97,7 @@ class CollectionList(UIListBoxWithHeader, AppPanel):
             return None
 
         # send it to base class
-        key = self.__super.keypress(size, key)
+        key = super().keypress(size, key)
         return key
 
     def status(self) -> str:
